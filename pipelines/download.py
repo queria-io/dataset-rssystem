@@ -52,7 +52,11 @@ def extract_csv(body: bytes) -> bytes:
 
 def fetch_zip(url: str) -> bytes | None:
     body = fetch(url, user_agent=USER_AGENT, not_found_ok=True)
-    return body if body is not None and body.startswith(b"PK") else None
+    if body is not None and body.startswith(b"PK"):
+        return body
+    snippet = body[:120].decode("utf-8", "replace") if body is not None else "404"
+    logger.info("  ZIP ではない (%d バイト): %s: %r", len(body or b""), url, snippet)
+    return None
 
 
 def download_year(year: int) -> bool:

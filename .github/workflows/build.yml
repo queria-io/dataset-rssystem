@@ -19,5 +19,5 @@ jobs:
           submodules: true
       - uses: astral-sh/setup-uv@v7
       - run: uv sync
-      - run: uv run python -c "from pipelines.download import download; download()"
+      - run: uv run python -c "import logging; logging.basicConfig(level=logging.INFO, format='%(message)s'); from pipelines.download import download; download()"
       - run: uv run dbt build --profiles-dir ci
