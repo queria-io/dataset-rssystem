@@ -23,8 +23,6 @@ logger = logging.getLogger("pipelines")
 SITE = "https://rssystem.go.jp"
 USER_AGENT = "dataset-rssystem (+https://github.com/queria-io/dataset-rssystem)"
 DATA = Path("data")
-# 画面のダウンロードボタンと同じ要求にする
-HEADERS = {"Accept": "application/zip,*/*", "Referer": f"{SITE}/download-csv"}
 
 # 取得する CSV。番号と、ZIP の名前の「RS_{年度}_」より後ろ
 FILES = {
@@ -53,7 +51,7 @@ def extract_csv(body: bytes) -> bytes:
 
 
 def fetch_zip(url: str) -> bytes | None:
-    body = fetch(url, headers=HEADERS, user_agent=USER_AGENT, not_found_ok=True)
+    body = fetch(url, user_agent=USER_AGENT, not_found_ok=True)
     if body is not None and body.startswith(b"PK"):
         return body
     snippet = body[:120].decode("utf-8", "replace") if body is not None else "404"
