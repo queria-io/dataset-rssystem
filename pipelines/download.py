@@ -76,6 +76,7 @@ def download_year(year: int) -> bool:
 
 def download() -> None:
     years = [y for y in fiscal_years() if download_year(y)]
-    if not years:
-        raise SystemExit("レビューシートの CSV が 1 年度も取れない")
+    # 途中の年度だけ取れないと、その年度のない版を公開してしまう。2024 年度から続いていなければ止める
+    if years != list(range(FIRST_YEAR, FIRST_YEAR + len(years))) or not years:
+        raise SystemExit(f"レビューシートの CSV の年度が 2024 年度から続いていない: {years}")
     logger.info("  年度: %s", years)
