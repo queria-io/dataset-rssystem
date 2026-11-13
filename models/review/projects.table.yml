@@ -1,0 +1,72 @@
+schema: review
+name: projects
+title: 予算事業
+description: |-
+  行政事業レビューのレビューシートの基本情報です。1 行が 1 事業年度の 1 予算事業で、全府省庁の事業を収録します。
+
+  - 所管の府省庁・局・課、事業の目的・現状と課題・概要、開始と終了の年度、実施方法を持ちます
+  - 根拠法令は review.legal_bases、政策・施策は review.policies、関係する計画・通知等は review.related_plans、予算と執行は review.budgets にあります。review_year と project_id で結合できます
+primary_key: [review_year, project_id]
+sources:
+  - path: https://rssystem.go.jp/download-csv
+fields:
+  - name: review_year
+    title: 事業年度
+    description: レビューシートの年度。2025 なら令和 7 年度の行政事業レビューのシート
+  - name: project_id
+    title: 予算事業 ID
+    description: RS システムが予算事業ごとに付ける ID。多くの事業は年度をまたいで同じ ID
+  - name: project_name
+    title: 事業名
+  - name: policy_ministry
+    title: 政策所管府省庁
+  - name: ministry
+    title: 府省庁
+    description: シートを作った府省庁
+  - name: bureau
+    title: 局・庁
+  - name: department
+    title: 部
+  - name: division
+    title: 課
+  - name: office
+    title: 室
+  - name: purpose
+    title: 事業の目的
+  - name: issues
+    title: 現状・課題
+  - name: overview
+    title: 事業の概要
+  - name: overview_url
+    title: 事業概要 URL
+  - name: project_category
+    title: 事業区分
+    description: 前年度事業・新規開始事業・新規要求事業
+  - name: start_year
+    title: 事業開始年度
+  - name: start_year_unknown
+    title: 開始年度不明
+  - name: end_year
+    title: 事業終了（予定）年度
+  - name: no_end_year
+    title: 終了予定なし
+  - name: major_expense_items
+    title: 主要経費
+    description: 予算の主要経費の分類。複数あるときは並ぶ
+  - name: method_direct
+    title: 実施方法（直接実施）
+  - name: method_subsidy
+    title: 実施方法（補助）
+  - name: method_burden
+    title: 実施方法（負担）
+  - name: method_grant
+    title: 実施方法（交付）
+  - name: method_contribution
+    title: 実施方法（分担金・拠出金）
+  - name: method_other
+    title: 実施方法（その他）
+  - name: former_project_number
+    title: 旧事業番号
+    description: RS システムより前の行政事業レビューの事業番号
+  - name: notes
+    title: 備考

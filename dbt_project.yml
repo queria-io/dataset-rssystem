@@ -1,0 +1,16 @@
+name: "rssystem"
+version: "1.0.0"
+
+profile: "rssystem"
+
+model-paths: ["models"]
+macro-paths: ["shared/macros"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  rssystem:
+    +database: rssystem
+    +materialized: table

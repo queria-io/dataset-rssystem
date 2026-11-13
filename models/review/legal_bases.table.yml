@@ -1,0 +1,35 @@
+schema: review
+name: legal_bases
+title: 根拠法令
+description: |-
+  予算事業ごとの根拠法令です。1 行が 1 事業の 1 法令（条・項・号まで書かれていればその単位）です。
+
+  - law_id は e-Gov 法令検索の法令 ID で、e_gov.laws.laws の law_id と同じ値です。法令 ID の無い行（告示・要綱など）は NULL です
+  - 法令 ID の無い行の law_title には「道路法第12条、道路法第50条_等」「関連事業参照」のような自由記述が入ることがあります
+  - 条・項・号はシートに書かれた表記のままです（例 第五条）
+primary_key: [review_year, project_id, legal_basis_number]
+sources:
+  - path: https://rssystem.go.jp/download-csv
+fields:
+  - name: review_year
+    title: 事業年度
+    description: レビューシートの年度。2025 なら令和 7 年度の行政事業レビューのシート
+  - name: project_id
+    title: 予算事業 ID
+    description: RS システムが予算事業ごとに付ける ID。多くの事業は年度をまたいで同じ ID
+  - name: legal_basis_number
+    title: 番号
+    description: 事業の中での根拠法令の番号
+  - name: law_title
+    title: 法令名
+  - name: law_num
+    title: 法令番号
+  - name: law_id
+    title: 法令 ID
+    description: e-Gov 法令検索の 15 桁の法令 ID。シートで「IDなし」の行は NULL
+  - name: article
+    title: 条
+  - name: paragraph
+    title: 項
+  - name: item
+    title: 号・号の細分

@@ -1,0 +1,43 @@
+schema: review
+name: budgets
+title: 予算・執行
+description: |-
+  予算事業の予算年度ごとの予算額と執行額の合計です。1 行が 1 事業の 1 予算年度です。金額の単位は円です。
+
+  - 1 つのシートに直近 5 年度分の予算年度があります。同じ予算年度が複数の事業年度のシートに載ることがあり、新しいシートの値が新しいものです
+  - 会計・勘定ごとの内訳は含みません
+primary_key: [review_year, project_id, budget_year]
+sources:
+  - path: https://rssystem.go.jp/download-csv
+fields:
+  - name: review_year
+    title: 事業年度
+    description: レビューシートの年度。2025 なら令和 7 年度の行政事業レビューのシート
+  - name: project_id
+    title: 予算事業 ID
+    description: RS システムが予算事業ごとに付ける ID。多くの事業は年度をまたいで同じ ID
+  - name: budget_year
+    title: 予算年度
+  - name: initial_budget
+    title: 当初予算
+  - name: supplementary_budget
+    title: 補正予算
+  - name: carried_over_from_previous
+    title: 前年度からの繰越し
+  - name: reserve_funds
+    title: 予備費等
+  - name: current_appropriation
+    title: 歳出予算現額
+  - name: execution_amount
+    title: 執行額
+  - name: execution_rate
+    title: 執行率
+    description: シートの値のまま
+  - name: carried_over_to_next
+    title: 翌年度への繰越し
+  - name: next_year_request
+    title: 翌年度要求額
+  - name: change_reason
+    title: 主な増減理由
+  - name: remarks
+    title: その他特記事項

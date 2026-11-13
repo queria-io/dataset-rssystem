@@ -1,0 +1,24 @@
+schema: review
+name: related_plans
+title: 関係する計画・通知等
+description: |-
+  予算事業に関係する計画・通知・閣議決定などの文書です。1 行が 1 事業の 1 文書です。
+
+  - plan_url は府省庁のサイトの PDF や HTML を指します。シートを作った後に移動・削除されて開けない URL もあります
+primary_key: [review_year, project_id, plan_number]
+sources:
+  - path: https://rssystem.go.jp/download-csv
+fields:
+  - name: review_year
+    title: 事業年度
+    description: レビューシートの年度。2025 なら令和 7 年度の行政事業レビューのシート
+  - name: project_id
+    title: 予算事業 ID
+    description: RS システムが予算事業ごとに付ける ID。多くの事業は年度をまたいで同じ ID
+  - name: plan_number
+    title: 番号
+    description: 事業の中での計画・通知等の番号
+  - name: plan_title
+    title: 計画・通知等の名前
+  - name: plan_url
+    title: 計画・通知等の URL
