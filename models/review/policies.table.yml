@@ -1,0 +1,26 @@
+schema: review
+name: policies
+title: 政策・施策
+description: 予算事業が属する政策評価の政策・施策です。1 行が 1 事業の 1 施策です。
+primary_key: [review_year, project_id, policy_number]
+sources:
+  - path: https://rssystem.go.jp/download-csv
+fields:
+  - name: review_year
+    title: 事業年度
+    description: レビューシートの年度。2025 なら令和 7 年度の行政事業レビューのシート
+  - name: project_id
+    title: 予算事業 ID
+    description: RS システムが予算事業ごとに付ける ID。多くの事業は年度をまたいで同じ ID
+  - name: policy_number
+    title: 番号
+    description: 事業の中での政策・施策の番号
+  - name: policy_ministry
+    title: 政策所管府省庁
+  - name: policy
+    title: 政策
+  - name: measure
+    title: 施策
+  - name: policy_url
+    title: 政策・施策 URL
+    description: 政策評価の資料の URL

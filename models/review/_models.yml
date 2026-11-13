@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: projects
+    columns:
+      - name: review_year
+        data_tests: [not_null]
+      - name: project_id
+        data_tests: [not_null]
+      - name: project_name
+        data_tests: [not_null]
+  - name: legal_bases
+    columns:
+      - name: law_title
+        data_tests: [not_null]
+  - name: budgets
+    columns:
+      - name: budget_year
+        data_tests: [not_null]
