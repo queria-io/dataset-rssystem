@@ -1,15 +1,16 @@
 """行政事業レビュー見える化サイト (RS システム) のレビューシートの CSV を取得する。
 
 CSV は年度ごとに https://rssystem.go.jp/files/{年度}/rs/{名前}.zip で配布されている。
-年度の候補は /api/projects/fiscal-years/ から取り、ZIP が無い年度は飛ばす。
+CSV の配布は 2024 年度のシートから。2024 年度から翌年までの年度を順に試し、ZIP が無い年度は飛ばす。
 ZIP の無い URL にはサイトの画面の HTML が 200 で返るので、本文が ZIP かで判定する。
+(画面が読む /api/projects/fiscal-years/ は GitHub のランナーから空の本文が返ったので使わない)
 
 出力: data/{年度}/{番号}.csv (例 data/2025/1-2.csv)
 ZIP の中のファイル名は #Uxxxx の表記になっていることがあるので、番号で付け直す。
 """
 
+import datetime
 import io
-import json
 import logging
 import zipfile
 from pathlib import Path
@@ -31,8 +32,11 @@ FILES = {
 }
 
 
+FIRST_YEAR = 2024
+
+
 def fiscal_years() -> list[int]:
-    return json.loads(fetch(f"{SITE}/api/projects/fiscal-years/", user_agent=USER_AGENT))
+    return list(range(FIRST_YEAR, datetime.date.today().year + 2))
 
 
 def zip_url(year: int, number: str) -> str:
