@@ -5,7 +5,7 @@ description: |-
   行政事業レビューのレビューシートの基本情報です。1 行が 1 事業年度の 1 予算事業で、全府省庁の事業を収録します。
 
   - 所管の府省庁・局・課、事業の目的・現状と課題・概要、開始と終了の年度、実施方法を持ちます
-  - 根拠法令は review.legal_bases、政策・施策は review.policies、関係する計画・通知等は review.related_plans、予算と執行は review.budgets にあります。review_year と project_id で結合できます
+  - 根拠法令は review.legal_bases、政策・施策は review.policies、関係する計画・通知等は review.related_plans、予算と執行は review.budgets、支出先と契約は review.expenditures にあります。review_year と project_id で結合できます
 primary_key: [review_year, project_id]
 sources:
   - path: https://rssystem.go.jp/download-csv

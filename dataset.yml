@@ -5,7 +5,7 @@ title: 行政事業レビュー見える化サイト
 description: |-
   内閣官房行政改革推進本部事務局が行政事業レビュー見える化サイト（RS システム）で公開する、国の予算事業のレビューシートのデータです。全府省庁の予算事業を収録しています。
 
-  行政事業レビュー（review）は、予算事業の一覧（review.projects）、根拠法令（review.legal_bases）、政策・施策（review.policies）、関係する計画・通知等（review.related_plans）、予算年度ごとの予算と執行（review.budgets）です。事業年度と予算事業 ID で結合できます。根拠法令の法令 ID は e-Gov 法令検索の法令 ID で、e_gov データセットの法令と結合できます。毎月、最新の CSV を取得します。
+  行政事業レビュー（review）は、予算事業の一覧（review.projects）、根拠法令（review.legal_bases）、政策・施策（review.policies）、関係する計画・通知等（review.related_plans）、予算年度ごとの予算と執行（review.budgets）、支出先と契約（review.expenditures）です。事業年度と予算事業 ID で結合できます。根拠法令の法令 ID は e-Gov 法令検索の法令 ID で、e_gov データセットの法令と結合できます。支出先には国税庁の法人番号があります。毎月、最新の CSV を取得します。
 
   出典：行政事業レビュー見える化サイト（https://rssystem.go.jp）を加工して作成
 keywords:
@@ -15,6 +15,10 @@ keywords:
   - 予算
   - 執行額
   - 根拠法令
+  - 支出先
+  - 法人番号
+  - 入札
+  - 落札率
   - 政策評価
   - RSシステム
   - 内閣官房
