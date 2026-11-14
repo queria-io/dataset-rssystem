@@ -17,3 +17,11 @@ models:
     columns:
       - name: budget_year
         data_tests: [not_null]
+  - name: expenditures
+    columns:
+      - name: project_id
+        data_tests: [not_null]
+      - name: block_name
+        data_tests: [not_null]
+      - name: supplier_name
+        data_tests: [not_null]

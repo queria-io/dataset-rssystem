@@ -1,0 +1,74 @@
+schema: review
+name: expenditures
+title: 支出先
+description: |-
+  予算事業の支出先と契約です。1 行が 1 事業の 1 支出先の 1 契約です。金額の単位は円です。
+
+  - 支出先はシートの支出先ブロック（A、B、…）ごとにまとめられています。ブロックと支出先の値（block_*・supplier_*）は、同じブロック・支出先の契約の行に同じ値が入ります。事業や支出先の支出額を合計するときは amount を足してください
+  - corporate_number は国税庁の法人番号です。シートに書かれた値のままで、法人番号の無い支出先（個人、「その他」にまとめた支出先など）は NULL です。共同企業体などに 9999999999999 のような法人番号でない値が入ることがあります
+  - winning_bid_rate（落札率）と bidder_count（入札者数）はシートの値のままです。入力の誤りと思われる値（落札率が 100 を大きく超えるなど）も直していません
+  - 契約の行の無い支出先ブロックは含みません
+primary_key: [review_year, line_number]
+sources:
+  - path: https://rssystem.go.jp/download-csv
+fields:
+  - name: review_year
+    title: 事業年度
+    description: レビューシートの年度。2025 なら令和 7 年度の行政事業レビューのシート
+  - name: project_id
+    title: 予算事業 ID
+    description: RS システムが予算事業ごとに付ける ID。review.projects と review_year・project_id で結合できます
+  - name: line_number
+    title: 行番号
+    description: 事業年度ごとの CSV の中の行の順番。CSV が新しくなると変わります
+  - name: block_number
+    title: 支出先ブロック番号
+    description: シートの資金の流れの図のブロックの記号（A、B、…）
+  - name: block_name
+    title: 支出先ブロック名
+  - name: block_supplier_count
+    title: 支出先の数
+    description: ブロックの支出先の数
+  - name: block_role
+    title: 事業を行う上での役割
+    description: ブロックの支出先が事業の中で行うこと
+  - name: block_amount
+    title: ブロックの合計支出額
+  - name: supplier_name
+    title: 支出先名
+  - name: corporate_number
+    title: 法人番号
+    description: 国税庁の法人番号（13 桁）
+  - name: address
+    title: 所在地
+  - name: corporate_kind
+    title: 法人種別
+    description: 国税庁の法人番号の法人種別のコード（101 国の機関、201 地方公共団体、301 株式会社、302 有限会社、305 合同会社、399 その他の設立登記法人、401 外国会社等、499 その他）
+  - name: other_suppliers
+    title: その他支出先
+    description: 支出先を「その他」にまとめた行なら true
+  - name: supplier_amount
+    title: 支出先の合計支出額
+  - name: contract_summary
+    title: 契約概要
+  - name: amount
+    title: 金額
+    description: 契約の支出額
+  - name: contract_method
+    title: 契約方式等
+    description: 一般競争契約（最低価格）、随意契約（少額）、補助金等交付など
+  - name: contract_method_detail
+    title: 具体的な契約方式等
+    description: 契約方式等の具体的な内容（再委託、特命随意契約など）
+  - name: bidder_count
+    title: 入札者数
+    description: 入札者数または応募者数
+  - name: winning_bid_rate
+    title: 落札率
+    description: パーセント。シートの値のまま
+  - name: single_bid_reason
+    title: 一者応札・一者応募又は競争性のない随意契約となった理由及び改善策
+    description: シートの項目名は「一者応札・一者応募又は競争性のない随意契約となった理由及び改善策（支出額10億円以上）」
+  - name: other_contracts
+    title: その他の契約
+    description: 契約を「その他」にまとめた行なら true

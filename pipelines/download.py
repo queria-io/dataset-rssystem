@@ -7,8 +7,10 @@ ZIP の無い URL にはサイトの画面の HTML が 200 で返るので、本
 
 出力: data/{年度}/{番号}.csv (例 data/2025/1-2.csv)
 ZIP の中のファイル名は #Uxxxx の表記になっていることがあるので、番号で付け直す。
+5-1 支出先は、支出先と契約が行の並びで支出先ブロックに結び付く。先頭に行番号の列を足して書く。
 """
 
+import csv
 import datetime
 import io
 import logging
@@ -29,7 +31,11 @@ FILES = {
     "1-2": "基本情報_事業概要等",
     "1-3": "基本情報_政策・施策、法令等",
     "2-1": "予算・執行_サマリ",
+    "5-1": "支出先_支出情報",
 }
+
+# 行の並びに意味がある CSV。先頭に「行番号」の列を足す
+NUMBERED = {"5-1"}
 
 
 FIRST_YEAR = 2024
@@ -48,6 +54,15 @@ def extract_csv(body: bytes) -> bytes:
     with zipfile.ZipFile(io.BytesIO(body)) as archive:
         (member,) = [n for n in archive.namelist() if n.lower().endswith(".csv")]
         return archive.read(member)
+
+
+def number_lines(body: bytes) -> bytes:
+    rows = csv.reader(io.StringIO(body.decode("utf-8-sig"), newline=""))
+    out = io.StringIO(newline="")
+    writer = csv.writer(out, lineterminator="\n")
+    writer.writerow(["行番号", *next(rows)])
+    writer.writerows([i, *row] for i, row in enumerate(rows, start=1))
+    return out.getvalue().encode("utf-8")
 
 
 def fetch_zip(url: str) -> bytes | None:
@@ -70,7 +85,8 @@ def download_year(year: int) -> bool:
     for number, body in bodies.items():
         path = DATA / str(year) / f"{number}.csv"
         path.parent.mkdir(parents=True, exist_ok=True)
-        write_atomic(path, extract_csv(body))
+        content = extract_csv(body)
+        write_atomic(path, number_lines(content) if number in NUMBERED else content)
     return True
 
 
