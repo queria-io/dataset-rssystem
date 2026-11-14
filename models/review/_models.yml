@@ -9,6 +9,8 @@ models:
         data_tests: [not_null]
       - name: project_name
         data_tests: [not_null]
+      - name: sheet_url
+        data_tests: [unique, not_null]
   - name: legal_bases
     columns:
       - name: law_title

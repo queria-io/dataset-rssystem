@@ -15,6 +15,7 @@
 
 - `review_year`（事業年度）はレビューシートの年度です。今は 2024 年度と 2025 年度のシートがあります
 - `project_id`（予算事業 ID）は RS システムが予算事業ごとに付ける ID です。多くの事業は年度をまたいで同じ ID です
+- `review.projects.sheet_url` は RS システムでその事業のレビューシートを検索した画面の URL です。検索結果の「詳細」からレビューシートを開けます
 - `review.legal_bases.law_id` は e-Gov 法令検索の法令 ID です。`e_gov.laws.laws` と結合できます
 - `review.expenditures.corporate_number` は国税庁の法人番号です。ブロックと支出先の合計支出額は契約の行ごとに繰り返し入るので、合計するときは `amount` を足します
 

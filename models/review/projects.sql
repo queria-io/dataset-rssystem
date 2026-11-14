@@ -8,6 +8,9 @@ select
     cast(事業年度 as integer) as review_year,
     予算事業ID as project_id,
     事業名 as project_name,
+    -- シート検索の画面を事業年度と予算事業 ID で絞った URL。検索結果はこの事業のシート 1 件だけになる
+    'https://rssystem.go.jp/project?fiscalYear=' || 事業年度
+        || '&projectNumbers=' || lpad(予算事業ID, 6, '0') as sheet_url,
     政策所管府省庁 as policy_ministry,
     府省庁 as ministry,
     "局・庁" as bureau,

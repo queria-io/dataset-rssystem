@@ -5,6 +5,7 @@ description: |-
   行政事業レビューのレビューシートの基本情報です。1 行が 1 事業年度の 1 予算事業で、全府省庁の事業を収録します。
 
   - 所管の府省庁・局・課、事業の目的・現状と課題・概要、開始と終了の年度、実施方法を持ちます
+  - sheet_url で、RS システムでその事業のレビューシートを検索した画面を開けます
   - 根拠法令は review.legal_bases、政策・施策は review.policies、関係する計画・通知等は review.related_plans、予算と執行は review.budgets、支出先と契約は review.expenditures にあります。review_year と project_id で結合できます
 primary_key: [review_year, project_id]
 sources:
@@ -18,6 +19,9 @@ fields:
     description: RS システムが予算事業ごとに付ける ID。多くの事業は年度をまたいで同じ ID
   - name: project_name
     title: 事業名
+  - name: sheet_url
+    title: レビューシートの URL
+    description: RS システムのシート検索を事業年度と予算事業 ID で絞った画面の URL。検索結果の「詳細」からレビューシートを開けます
   - name: policy_ministry
     title: 政策所管府省庁
   - name: ministry
