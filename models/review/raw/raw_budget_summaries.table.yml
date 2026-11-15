@@ -1,4 +1,0 @@
-schema: review
-name: raw_budget_summaries
-description: 2-1 予算・執行_サマリ（取得したままの CSV、全列が文字列）
-annotations: { queria: { published: false } }

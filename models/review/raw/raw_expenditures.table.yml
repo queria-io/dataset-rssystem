@@ -1,4 +1,0 @@
-schema: review
-name: raw_expenditures
-description: 5-1 支出先_支出情報（取得したままの CSV、全列が文字列）
-annotations: { queria: { published: false } }
