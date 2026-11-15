@@ -17,5 +17,6 @@ select
     cast("翌年度要求額（合計）" as bigint) as next_year_request,
     主な増減理由 as change_reason,
     その他特記事項 as remarks,
-    当初予算 is null and 歳出予算現額 is null as is_total
+    当初予算 is null and 歳出予算現額 is null as is_total,
+    filename as source_path
 from {{ ref('raw_budget_summaries') }}

@@ -26,5 +26,6 @@ select
     cast(その他の契約 as boolean) as other_contracts,
     支出先ブロック名 is not null as is_block,
     支出先の合計支出額 is not null as is_supplier,
-    契約概要 is not null or 金額 is not null as is_contract
+    契約概要 is not null or 金額 is not null as is_contract,
+    filename as source_path
 from {{ ref('raw_expenditures') }}

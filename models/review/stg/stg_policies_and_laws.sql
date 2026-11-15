@@ -18,5 +18,6 @@ select
     "号・号の細分" as item,
     cast("番号（関係する計画・通知等）" as integer) as plan_number,
     計画通知名 as plan_title,
-    計画通知等URL as plan_url
+    計画通知等URL as plan_url,
+    filename as source_path
 from {{ ref('raw_policies_and_laws') }}

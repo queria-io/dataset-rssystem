@@ -72,3 +72,6 @@ fields:
   - name: other_contracts
     title: その他の契約
     description: 契約を「その他」にまとめた行なら true
+  - name: source_sha256
+    title: 元のファイルの SHA-256
+    description: この行を読んだファイルの SHA-256 です。source_file の sha256 に当たります
