@@ -74,3 +74,6 @@ fields:
     description: RS システムより前の行政事業レビューの事業番号
   - name: notes
     title: 備考
+  - name: source_sha256
+    title: 元のファイルの SHA-256
+    description: この行を読んだファイルの SHA-256 です。source_file の sha256 に当たります

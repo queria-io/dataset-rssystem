@@ -46,7 +46,8 @@ select
     c.bidder_count,
     c.winning_bid_rate,
     c.single_bid_reason,
-    c.other_contracts
+    c.other_contracts,
+    f.sha256 as source_sha256
 from contracts as c
 asof left join blocks as b
     on b.review_year = c.review_year and b.project_id = c.project_id
@@ -55,3 +56,4 @@ asof left join suppliers as s
     on s.review_year = c.review_year and s.project_id = c.project_id
     and s.block_number = c.block_number and s.supplier_name = c.supplier_name
     and s.line_number < c.line_number
+left join {{ ref('stg_source_file') }} as f on list_contains(f.paths, c.source_path)

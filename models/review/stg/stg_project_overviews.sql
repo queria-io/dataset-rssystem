@@ -30,5 +30,6 @@ select
     "実施方法ー分担金・拠出金" is not null as method_contribution,
     実施方法ーその他 is not null as method_other,
     旧事業番号 as former_project_number,
-    備考 as notes
+    備考 as notes,
+    filename as source_path
 from {{ ref('raw_project_overviews') }}

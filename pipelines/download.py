@@ -5,7 +5,7 @@ CSV の配布は 2024 年度のシートから。2024 年度から翌年まで�
 ZIP の無い URL にはサイトの画面の HTML が 200 で返るので、本文が ZIP かで判定する。
 (画面が読む /api/projects/fiscal-years/ は GitHub のランナーから空の本文が返ったので使わない)
 
-出力: data/{年度}/{番号}.csv (例 data/2025/1-2.csv)
+出力: data/{年度}/{番号}.csv (例 data/2025/1-2.csv) と、取得した ZIP の記録 data/source_file.parquet (ZIP 本体は残さない)
 ZIP の中のファイル名は #Uxxxx の表記になっていることがあるので、番号で付け直す。
 5-1 支出先は、支出先と契約が行の並びで支出先ブロックに結び付く。先頭に行番号の列を足して書く。
 """
@@ -14,11 +14,14 @@ import csv
 import datetime
 import io
 import logging
+import tempfile
 import zipfile
 from pathlib import Path
+from urllib.error import HTTPError
 from urllib.parse import quote
 
-from shared.fetch import fetch, write_atomic
+from pipelines.source_file import write_source_files
+from shared.fetch import fetch_file, write_atomic
 
 logger = logging.getLogger("pipelines")
 
@@ -50,8 +53,8 @@ def zip_url(year: int, number: str) -> str:
     return f"{SITE}/files/{year}/rs/{quote(name)}"
 
 
-def extract_csv(body: bytes) -> bytes:
-    with zipfile.ZipFile(io.BytesIO(body)) as archive:
+def extract_csv(path: Path) -> bytes:
+    with zipfile.ZipFile(path) as archive:
         (member,) = [n for n in archive.namelist() if n.lower().endswith(".csv")]
         return archive.read(member)
 
@@ -65,34 +68,46 @@ def number_lines(body: bytes) -> bytes:
     return out.getvalue().encode("utf-8")
 
 
-def fetch_zip(url: str) -> bytes | None:
-    body = fetch(url, user_agent=USER_AGENT, not_found_ok=True)
-    if body is not None and body.startswith(b"PK"):
-        return body
-    snippet = body[:120].decode("utf-8", "replace") if body is not None else "404"
-    logger.info("  ZIP ではない (%d バイト): %s: %r", len(body or b""), url, snippet)
+def fetch_zip(url: str, path: Path) -> dict | None:
+    """url の ZIP を path に取得して source_file の行を返す。ZIP が無ければ None。"""
+    try:
+        source = fetch_file(url, path, user_agent=USER_AGENT)
+    except HTTPError as error:
+        if error.code != 404:
+            raise
+        logger.info("  ZIP ではない (404): %s", url)
+        return None
+    with path.open("rb") as f:
+        head = f.read(120)
+    if head.startswith(b"PK"):
+        return source
+    logger.info("  ZIP ではない (%d バイト): %s: %r", source["bytes"], url, head.decode("utf-8", "replace"))
     return None
 
 
-def download_year(year: int) -> bool:
-    """year の CSV をすべて書き、その年度の ZIP が配布されていたかを返す。"""
-    bodies = {n: fetch_zip(zip_url(year, n)) for n in FILES}
-    if all(b is None for b in bodies.values()):
-        return False
-    missing = [n for n, b in bodies.items() if b is None]
+def download_year(year: int, tmp: Path) -> list[dict]:
+    """year の CSV をすべて書き、取得した ZIP の source_file の行を返す。その年度の ZIP が無ければ空。"""
+    zips = {n: tmp / f"{year}_{n}.zip" for n in FILES}
+    sources = {n: fetch_zip(zip_url(year, n), zips[n]) for n in FILES}
+    if all(s is None for s in sources.values()):
+        return []
+    missing = [n for n, s in sources.items() if s is None]
     if missing:
         raise SystemExit(f"{year} 年度の ZIP の一部が無い: {missing}")
-    for number, body in bodies.items():
+    for number in FILES:
         path = DATA / str(year) / f"{number}.csv"
         path.parent.mkdir(parents=True, exist_ok=True)
-        content = extract_csv(body)
+        content = extract_csv(zips[number])
         write_atomic(path, number_lines(content) if number in NUMBERED else content)
-    return True
+    return [{**sources[n], "page_url": f"{SITE}/download-csv", "paths": [str(DATA / str(year) / f"{n}.csv")]} for n in FILES]
 
 
 def download() -> None:
-    years = [y for y in fiscal_years() if download_year(y)]
+    with tempfile.TemporaryDirectory() as tmp:
+        fetched = {y: download_year(y, Path(tmp)) for y in fiscal_years()}
+    years = [y for y, sources in fetched.items() if sources]
     # 途中の年度だけ取れないと、その年度のない版を公開してしまう。2024 年度から続いていなければ止める
     if years != list(range(FIRST_YEAR, FIRST_YEAR + len(years))) or not years:
         raise SystemExit(f"レビューシートの CSV の年度が 2024 年度から続いていない: {years}")
+    write_source_files([s for sources in fetched.values() for s in sources], DATA / "source_file.parquet")
     logger.info("  年度: %s", years)
