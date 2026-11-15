@@ -13,4 +13,10 @@ clean-targets:
 models:
   rssystem:
     +database: rssystem
-    +materialized: table
+    review:
+      raw:
+        +materialized: table
+      stg:
+        +materialized: view
+      mart:
+        +materialized: table

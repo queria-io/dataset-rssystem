@@ -1,8 +1,4 @@
-{# 1-2 事業概要等。主要経費が複数ある事業は主要経費ごとに行が分かれているので、1 事業 1 行にまとめる #}
-
-with source as (
-    select * from read_csv('data/*/1-2.csv', all_varchar = true)
-)
+{# 1-2 事業概要等。主要経費が複数ある事業は主要経費ごとに行が分かれている #}
 
 select
     cast(事業年度 as integer) as review_year,
@@ -26,7 +22,7 @@ select
     cast(開始年度不明 as boolean) as start_year_unknown,
     cast("事業終了（予定）年度" as integer) as end_year,
     cast(終了予定なし as boolean) as no_end_year,
-    list(distinct 主要経費 order by 主要経費) filter (where 主要経費 is not null) as major_expense_items,
+    主要経費 as major_expense_item,
     実施方法ー直接実施 is not null as method_direct,
     実施方法ー補助 is not null as method_subsidy,
     実施方法ー負担 is not null as method_burden,
@@ -35,5 +31,4 @@ select
     実施方法ーその他 is not null as method_other,
     旧事業番号 as former_project_number,
     備考 as notes
-from source
-group by all
+from {{ ref('raw_project_overviews') }}

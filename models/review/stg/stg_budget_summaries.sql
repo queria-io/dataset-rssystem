@@ -1,4 +1,4 @@
-{# 2-1 予算・執行_サマリ。予算年度ごとに合計の行と会計・勘定ごとの内訳の行がある。ここでは合計の行を取る。
+{# 2-1 予算・執行_サマリ。予算年度ごとに合計の行と会計・勘定ごとの内訳の行がある。
    合計の行は内訳の列 (当初予算・歳出予算現額) が空。会計区分は内訳の行でも空のことがあるので使わない。
    金額は円 #}
 
@@ -16,6 +16,6 @@ select
     cast("翌年度への繰越し(合計）" as bigint) as carried_over_to_next,
     cast("翌年度要求額（合計）" as bigint) as next_year_request,
     主な増減理由 as change_reason,
-    その他特記事項 as remarks
-from read_csv('data/*/2-1.csv', all_varchar = true)
-where 当初予算 is null and 歳出予算現額 is null
+    その他特記事項 as remarks,
+    当初予算 is null and 歳出予算現額 is null as is_total
+from {{ ref('raw_budget_summaries') }}

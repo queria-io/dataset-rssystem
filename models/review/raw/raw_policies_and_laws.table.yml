@@ -1,0 +1,4 @@
+schema: review
+name: raw_policies_and_laws
+description: 1-3 基本情報_政策・施策、法令等（取得したままの CSV、全列が文字列）
+annotations: { queria: { published: false } }

@@ -1,0 +1,4 @@
+schema: review
+name: raw_project_overviews
+description: 1-2 基本情報_事業概要等（取得したままの CSV、全列が文字列）
+annotations: { queria: { published: false } }
