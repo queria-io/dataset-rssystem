@@ -1,5 +1,6 @@
-schema: review
-name: expenditures
+---
+$schema: https://queria.io/schemas/table/v1.json
+table: review.expenditures
 title: 支出先
 description: |-
   予算事業の支出先と契約です。1 行が 1 事業の 1 支出先の 1 契約です。金額の単位は円です。
@@ -75,3 +76,4 @@ fields:
   - name: source_sha256
     title: 元のファイルの SHA-256
     description: この行を読んだファイルの SHA-256 です。source_file の sha256 に当たります
+---
