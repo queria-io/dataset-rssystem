@@ -1,5 +1,6 @@
-schema: review
-name: projects
+---
+$schema: https://queria.io/schemas/table/v1.json
+table: review.projects
 title: 予算事業
 description: |-
   行政事業レビューのレビューシートの基本情報です。1 行が 1 事業年度の 1 予算事業で、全府省庁の事業を収録します。
@@ -77,3 +78,4 @@ fields:
   - name: source_sha256
     title: 元のファイルの SHA-256
     description: この行を読んだファイルの SHA-256 です。source_file の sha256 に当たります
+---

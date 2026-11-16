@@ -1,5 +1,6 @@
-schema: review
-name: related_plans
+---
+$schema: https://queria.io/schemas/table/v1.json
+table: review.related_plans
 title: 関係する計画・通知等
 description: |-
   予算事業に関係する計画・通知・閣議決定などの文書です。1 行が 1 事業の 1 文書です。
@@ -25,3 +26,4 @@ fields:
   - name: source_sha256
     title: 元のファイルの SHA-256
     description: この行を読んだファイルの SHA-256 です。source_file の sha256 に当たります
+---

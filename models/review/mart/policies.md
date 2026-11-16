@@ -1,5 +1,6 @@
-schema: review
-name: policies
+---
+$schema: https://queria.io/schemas/table/v1.json
+table: review.policies
 title: 政策・施策
 description: 予算事業が属する政策評価の政策・施策です。1 行が 1 事業の 1 施策です。
 primary_key: [review_year, project_id, policy_number]
@@ -27,3 +28,4 @@ fields:
   - name: source_sha256
     title: 元のファイルの SHA-256
     description: この行を読んだファイルの SHA-256 です。source_file の sha256 に当たります
+---

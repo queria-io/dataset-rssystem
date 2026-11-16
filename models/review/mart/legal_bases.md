@@ -1,5 +1,6 @@
-schema: review
-name: legal_bases
+---
+$schema: https://queria.io/schemas/table/v1.json
+table: review.legal_bases
 title: 根拠法令
 description: |-
   予算事業ごとの根拠法令です。1 行が 1 事業の 1 法令（条・項・号まで書かれていればその単位）です。
@@ -36,3 +37,4 @@ fields:
   - name: source_sha256
     title: 元のファイルの SHA-256
     description: この行を読んだファイルの SHA-256 です。source_file の sha256 に当たります
+---

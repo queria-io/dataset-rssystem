@@ -1,5 +1,6 @@
-schema: review
-name: budgets
+---
+$schema: https://queria.io/schemas/table/v1.json
+table: review.budgets
 title: 予算・執行
 description: |-
   予算事業の予算年度ごとの予算額と執行額の合計です。1 行が 1 事業の 1 予算年度です。金額の単位は円です。
@@ -44,3 +45,4 @@ fields:
   - name: source_sha256
     title: 元のファイルの SHA-256
     description: この行を読んだファイルの SHA-256 です。source_file の sha256 に当たります
+---
