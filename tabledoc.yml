@@ -31,15 +31,15 @@ licenses:
 sources:
   - id: download-csv
     title: 行政事業レビュー見える化サイト CSV データのダウンロード
-    path: https://rssystem.go.jp/download-csv
+    url: https://rssystem.go.jp/download-csv
   - id: terms
     title: 行政事業レビュー見える化サイト 利用規約
-    path: https://rssystem.go.jp/terms
+    url: https://rssystem.go.jp/terms
 
 contributors:
   - id: gyoukaku
     title: 内閣官房行政改革推進本部事務局
-    path: https://www.gyoukaku.go.jp/
+    url: https://www.gyoukaku.go.jp/
     roles: [rightsHolder]
 
 spatial_coverage: [JP]
