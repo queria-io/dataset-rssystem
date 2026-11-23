@@ -1,6 +1,4 @@
----
-$schema: https://queria.io/schemas/table/v1.json
-table: review.projects
+$schema: https://tabledoc.queria.io/schemas/table/v1.json
 title: 予算事業
 description: |-
   行政事業レビューのレビューシートの基本情報です。1 行が 1 事業年度の 1 予算事業で、全府省庁の事業を収録します。
@@ -9,9 +7,8 @@ description: |-
   - sheet_url で、RS システムでその事業のレビューシートを検索した画面を開けます
   - 根拠法令は review.legal_bases、政策・施策は review.policies、関係する計画・通知等は review.related_plans、予算と執行は review.budgets、支出先と契約は review.expenditures にあります。review_year と project_id で結合できます
 primary_key: [review_year, project_id]
-sources:
-  - path: https://rssystem.go.jp/download-csv
-fields:
+sources: [download-csv]
+columns:
   - name: review_year
     title: 事業年度
     description: レビューシートの年度。2025 なら令和 7 年度の行政事業レビューのシート
@@ -78,4 +75,3 @@ fields:
   - name: source_sha256
     title: 元のファイルの SHA-256
     description: この行を読んだファイルの SHA-256 です。source_file の sha256 に当たります
----
