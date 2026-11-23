@@ -1,12 +1,9 @@
----
-$schema: https://queria.io/schemas/table/v1.json
-table: review.policies
+$schema: https://tabledoc.queria.io/schemas/table/v1.json
 title: 政策・施策
 description: 予算事業が属する政策評価の政策・施策です。1 行が 1 事業の 1 施策です。
 primary_key: [review_year, project_id, policy_number]
-sources:
-  - path: https://rssystem.go.jp/download-csv
-fields:
+sources: [download-csv]
+columns:
   - name: review_year
     title: 事業年度
     description: レビューシートの年度。2025 なら令和 7 年度の行政事業レビューのシート
@@ -28,4 +25,3 @@ fields:
   - name: source_sha256
     title: 元のファイルの SHA-256
     description: この行を読んだファイルの SHA-256 です。source_file の sha256 に当たります
----

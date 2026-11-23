@@ -1,15 +1,12 @@
----
-$schema: https://queria.io/schemas/table/v1.json
-table: review.related_plans
+$schema: https://tabledoc.queria.io/schemas/table/v1.json
 title: 関係する計画・通知等
 description: |-
   予算事業に関係する計画・通知・閣議決定などの文書です。1 行が 1 事業の 1 文書です。
 
   - plan_url は府省庁のサイトの PDF や HTML を指します。シートを作った後に移動・削除されて開けない URL もあります
 primary_key: [review_year, project_id, plan_number]
-sources:
-  - path: https://rssystem.go.jp/download-csv
-fields:
+sources: [download-csv]
+columns:
   - name: review_year
     title: 事業年度
     description: レビューシートの年度。2025 なら令和 7 年度の行政事業レビューのシート
@@ -26,4 +23,3 @@ fields:
   - name: source_sha256
     title: 元のファイルの SHA-256
     description: この行を読んだファイルの SHA-256 です。source_file の sha256 に当たります
----
