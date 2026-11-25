@@ -55,6 +55,7 @@ columns:
   - name: contract_method
     title: 契約方式等
     description: 一般競争契約（最低価格）、随意契約（少額）、補助金等交付など
+    dimension: categorical
   - name: contract_method_detail
     title: 具体的な契約方式等
     description: 契約方式等の具体的な内容（再委託、特命随意契約など）

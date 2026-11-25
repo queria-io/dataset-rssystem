@@ -44,6 +44,7 @@ columns:
   - name: project_category
     title: 事業区分
     description: 前年度事業・新規開始事業・新規要求事業
+    dimension: categorical
   - name: start_year
     title: 事業開始年度
   - name: start_year_unknown
