@@ -43,6 +43,8 @@ NUMBERED = {"5-1"}
 
 
 FIRST_YEAR = 2024
+# models/ は 2025 年度までのシートと 2026 年度のシートの両方の列名を読む。この年度まで取れなければ止める
+FORMAT_CHANGE_YEAR = 2026
 
 
 def fiscal_years() -> list[int]:
@@ -112,5 +114,7 @@ def download() -> None:
     # 途中の年度だけ取れないと、その年度のない版を公開してしまう。2024 年度から続いていなければ止める
     if years != list(range(FIRST_YEAR, FIRST_YEAR + len(years))):
         raise SystemExit(f"レビューシートの CSV の年度が 2024 年度から続いていない: {years}")
+    if years[-1] < FORMAT_CHANGE_YEAR:
+        raise SystemExit(f"{FORMAT_CHANGE_YEAR} 年度のシートの CSV を取得できなかった: {years}")
     write_source_files([s for sources in fetched.values() for s in sources], DATA / "source_file.parquet")
     logger.info("  年度: %s", years)
