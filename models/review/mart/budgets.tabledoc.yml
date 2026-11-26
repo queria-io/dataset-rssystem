@@ -30,9 +30,10 @@ columns:
     title: 執行額
   - name: execution_rate
     title: 執行率
-    description: シートの値のまま
+    description: 比率（1 が 100%）。2026 年度のシートは百分率で書かれているので、100 で割った値です
   - name: carried_over_to_next
     title: 翌年度への繰越し
+    description: 2026 年度のシートにはこの項目が無いので、review_year が 2026 の行は NULL です
   - name: next_year_request
     title: 翌年度要求額
   - name: change_reason
