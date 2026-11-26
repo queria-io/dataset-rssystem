@@ -4,6 +4,7 @@ CSV は年度ごとに https://rssystem.go.jp/files/{年度}/rs/{名前}.zip で
 CSV の配布は 2024 年度のシートから。2024 年度から翌年までの年度を順に試し、ZIP が無い年度は飛ばす。
 ZIP の無い URL にはサイトの画面の HTML が 200 で返るので、本文が ZIP かで判定する。
 (画面が読む /api/projects/fiscal-years/ は GitHub のランナーから空の本文が返ったので使わない)
+GitHub Actions のランナーからは、2026 年 11 月時点でどの URL にも画面の HTML が返り、ZIP を取得できない。
 
 出力: data/{年度}/{番号}.csv (例 data/2025/1-2.csv) と、取得した ZIP の記録 data/source_file.parquet (ZIP 本体は残さない)
 ZIP の中のファイル名は #Uxxxx の表記になっていることがあるので、番号で付け直す。
@@ -42,6 +43,8 @@ NUMBERED = {"5-1"}
 
 
 FIRST_YEAR = 2024
+# models/ は 2025 年度までのシートと 2026 年度のシートの両方の列名を読む。この年度まで取れなければ止める
+FORMAT_CHANGE_YEAR = 2026
 
 
 def fiscal_years() -> list[int]:
@@ -106,8 +109,12 @@ def download() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         fetched = {y: download_year(y, Path(tmp)) for y in fiscal_years()}
     years = [y for y, sources in fetched.items() if sources]
+    if not years:
+        raise SystemExit("どの年度の ZIP も取得できなかった。rssystem.go.jp はこの実行環境の IP アドレスからの取得に画面の HTML を返していることがある")
     # 途中の年度だけ取れないと、その年度のない版を公開してしまう。2024 年度から続いていなければ止める
-    if years != list(range(FIRST_YEAR, FIRST_YEAR + len(years))) or not years:
+    if years != list(range(FIRST_YEAR, FIRST_YEAR + len(years))):
         raise SystemExit(f"レビューシートの CSV の年度が 2024 年度から続いていない: {years}")
+    if years[-1] < FORMAT_CHANGE_YEAR:
+        raise SystemExit(f"{FORMAT_CHANGE_YEAR} 年度のシートの CSV を取得できなかった: {years}")
     write_source_files([s for sources in fetched.values() for s in sources], DATA / "source_file.parquet")
     logger.info("  年度: %s", years)

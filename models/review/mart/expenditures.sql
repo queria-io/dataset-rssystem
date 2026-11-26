@@ -1,4 +1,4 @@
-{# 1 行を 1 契約にし、直前のブロックの行と支出先の行の値を持たせる。
+{# 1 行を 1 契約にし、直前 (その行を含む) のブロックの行と支出先の行の値を持たせる。
    同じ事業に同じブロック番号・支出先名の行が 2 回出ることがあるので、キーではなく行番号で直前の行を取る (asof join)。
    金額は円 #}
 
@@ -51,9 +51,9 @@ select
 from contracts as c
 asof left join blocks as b
     on b.review_year = c.review_year and b.project_id = c.project_id
-    and b.block_number = c.block_number and b.line_number < c.line_number
+    and b.block_number = c.block_number and b.line_number <= c.line_number
 asof left join suppliers as s
     on s.review_year = c.review_year and s.project_id = c.project_id
     and s.block_number = c.block_number and s.supplier_name = c.supplier_name
-    and s.line_number < c.line_number
+    and s.line_number <= c.line_number
 left join {{ ref('stg_source_file') }} as f on list_contains(f.paths, c.source_path)
